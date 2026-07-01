@@ -1,1 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Авторизация TikTok</title>
+</head>
+<body>
+  <h2 id="status">Обрабатываем авторизацию...</h2>
 
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+    const statusEl = document.getElementById("status");
+
+    if (code) {
+      // Отправляем код на твой сервер на Render
+      fetch("https://tiktok-api-server-ze4o.onrender.com/callback?code=" + encodeURIComponent(code))
+        .then(res => res.text())
+        .then(text => {
+          statusEl.textContent = "Авторизация прошла успешно! Можешь закрыть эту вкладку.";
+        })
+        .catch(err => {
+          statusEl.textContent = "Ошибка авторизации: " + err;
+        });
+    } else {
+      statusEl.textContent = "Код авторизации не найден.";
+    }
+  </script>
+</body>
+</html>
